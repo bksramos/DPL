@@ -23,4 +23,5 @@ class Section extends Model
     {
         return null !== $this->users()->where('name', $user)->first();
     }
+
 }

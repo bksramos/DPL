@@ -49,7 +49,18 @@
                             <td>{{ $goalForm->unitary_value }}</td>
                             <td>{{ $goalForm->amount }}</td>
                             <td>{{ date( 'M j, Y', strtotime($goalForm->created_at)) }}</td>
-                            <td><a href="{{ route('goal.show', $goalForm->id) }}" class="btn btn-default btn-sm">View</a> <a href="{{ route('goal.edit', $goalForm->id) }}" class="btn btn-default btn-sm">Edit</a> </td>
+                            <td>
+                                
+                                {!! Form::open(['route' => ['goal.destroy', $goalForm->id], 'method' => 'DELETE']) !!}
+
+                                {!! Form::submit('Delete', ['class' => 'btn btn-default btn-sm']) !!}
+
+                                {!! Form::close() !!}
+                                
+                            <td>
+                                <a href="{{ route('goal.edit', $goalForm->id) }}" class="btn btn-default btn-sm">Edit</a>
+                            </td>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

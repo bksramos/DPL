@@ -67,5 +67,5 @@ Route::get('/education/questions/create', 'EducationFormDescriptionQuestionContr
 Route::post('/education/questions', 'EducationFormDescriptionQuestionController@store');
 
 /*Goal route*/
-Route::resource('goal', 'GoalFormController' , ['except' => ['store']]);
+Route::resource('goal', 'GoalFormController');
 Route::get('/goal/add', 'GoalFormController@index');

@@ -23,7 +23,7 @@ class CreateGoalFormsTable extends Migration
             $table->tinyInteger('quantity');
             $table->float('unitary_value');
             $table->float('amount');
-            $table->tinyInteger('year');
+            $table->integer('year');
             $table->timestamps();
 
             $table->engine = 'InnoDB';
