@@ -1,0 +1,90 @@
+@extends('layouts.master')
+
+@section('content')
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+</head>
+
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa-file-text-o"></i> Cursos </h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/dashboard">Início</a></li>
+                    <li><i class="icon_document_alt"></i>Cursos</li>
+                    <li><i class="fa fa-file-text-o"></i>Editar Cursos</li>
+                </ol>
+            </div>
+        </div>
+			 <div class="row">
+			        {!! Form::model($course, ['route' => ['course.update', $course->id], 'method' => 'PUT', 'files' => true]) !!}
+			        <div class="col-md-8">
+			            {{ Form::label('title', 'Nome:') }}
+                        {{ form::text('title', null, array('class' => 'form-control')) }}
+
+			            {{ Form::label('initials', 'Sigla:') }}
+                        {{ form::text('initials', null, array('class' => 'form-control')) }}
+
+			            {{ Form::label('class', 'Turma:') }}
+                        {{ form::text('class', null, array('class' => 'form-control')) }}
+
+			            {{ Form::label('dateline_start', 'Data de Início do Curso:') }}
+                        <div class="form-group input-group date">
+                            {{ form::text('dateline_start', null, array('class' => 'form-control')) }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                                  
+                                                  
+                                @error('dateline_start')
+                                    <small class="text-danger" role='alert'>{{ $message }}</small>
+                                @enderror
+                        </div>
+                               <script type="text/javascript">
+                                    $('.date').datepicker({
+                                        autoclose:true,
+                                        format: 'yyyy-mm-dd'
+                                        });
+                               </script>
+
+			            {{ Form::label('featured_dashboard', 'Adicionar Dashboard do Curso:') }}
+                        {{ form::file('featured_dashboard') }}
+
+			            {{ Form::label('featured_report', 'Adicionar Relatório Estatístico do Curso') }}
+                        {{ form::file('featured_report') }}
+			        </div>
+
+			        <div class="col-md-4">
+			            <div class="well">
+			                <dl class="dl-horizontal">
+			                    <dt>Created At:</dt>
+			                    <dd>{{ date( 'M j, Y H:i', strtotime($course->created_at)) }}</dd>
+			                </dl>
+
+			                <dl class="dl-horizontal">
+			                    <dt>Last Updated:</dt>
+			                    <dd>{{date( 'M j, Y H:i', strtotime($course->updated_at)) }}</dd>
+			                </dl>
+			                <hr>
+			                <div class="row">
+			                    <div class="col-sm-6">
+			                        {!! Html::linkRoute('course.show', 'Cancel', array($course->id), array('class' => 'btn btn-danger btn-block'))  !!}
+			                    </div>
+			                    <div class="col-sm-6">
+			                        {{ Form::submit('Salvar Alterações', ['class' => 'btn btn-success btn-block']) }}
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        {!! Form::close() !!}
+			    </div> <!-- end of the .row (end of the form) -->
+			    </section>
+        <!-- page end-->
+    </section>
+
+@stop
