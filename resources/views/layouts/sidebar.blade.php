@@ -39,13 +39,13 @@
                 </ul>
             </li>
             <li>
-                <a class="" href="widgets.html">
-                    <i class="icon_pin"></i>
+                <a class="" href="{{ route('fullcalendar') }}">
+                    <i class="icon_calendar"></i>
                     <span>Calendário DPL</span>
                 </a>
             </li>
             <li>
-                <a class="" href="chart-chartjs.html">
+                <a class="" href="{{ route('briefing') }}">
                     <i class="icon_piechart"></i>
                     <span>Briefings</span>
 
@@ -74,6 +74,7 @@
                 </a>
                 <ul class="sub">
                     <li><a class="" href="{{route('admin.roles.index')}}">Editar Funções</a></li>
+                    <li><a class="" href="{{route('event-types.index')}}">Tipo Eventos</a></li>
                 </ul>
             </li>
 

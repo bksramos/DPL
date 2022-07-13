@@ -17,10 +17,8 @@ class GoalFormController extends Controller
      */
     public function index()
     {
-        $goalForm = GoalForm::orderBy('id', 'desc')->paginate(10);
+        $goalForm = GoalForm::orderBy('year', 'desc')->paginate(10);
 
-        // return a view and pass in the above variable
-        //dd($education_forms);
         return view('goal.index')->withGoalForms($goalForm);
 
     }

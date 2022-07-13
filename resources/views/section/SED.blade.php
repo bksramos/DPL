@@ -28,14 +28,14 @@
     <div class="row">
         <div class="col-md-6" align="center">
             <h3 align="center">PLAMENS</h3>
-            <a href="{{ route('education.index') }}">
-                <img src="/img/sections/SED/PLAMENS.jpg" alt="PLAMENS" width="400" height="300">
+            <a href="{{ route('education-form.index') }}">
+                <img src="/img/sections/SED/PLAMENS.png" alt="PLAMENS" width="400" height="300">
             </a>
         </div>
         <div class="col-md-6" align="center">
             <h3 align="center">PLAMTAX</h3>
-            <a href="#">
-                <img src="/img/sections/SED/PLAMTAX.jpg" alt="PLAMTAX" width="400" height="300">
+            <a href="{{ route('technical-form.index') }}">
+                <img src="/img/sections/SED/PLAMTAX.png" alt="PLAMTAX" width="400" height="300">
             </a>
         </div>
     </div>
@@ -43,16 +43,15 @@
         <div class="col-md-6" align="center">
             <h3 align="center">FPAB</h3>
             <a href="#">
-                <img src="/img/sections/SED/FPAB.jpg" alt="FPAB" width="400" height="300">
+                <img src="/img/sections/SED/FPAB1.jpg" alt="FPAB" width="400" height="300">
             </a>            
         </div>
         <div class="col-md-6" align="center">
             <h3 align="center">CURSOS</h3>
             <a href="#">
-                <img src="/img/sections/SED/CURSOS.jpg" alt="CURSOS" width="400" height="300">
+                <img src="/img/sections/SED/CURSOS.png" alt="CURSOS" width="400" height="300">
             </a>            
         </div>
-        
     </div>
 
 

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationFormJustification extends Model
 {
-    protected $fillable = [];
+    protected $fillable = [
+        'detailed_justification'
+    ];
 
     public function EducationForms()
     {
-        return $this->belongsTo(EducationForm::class)->withTimestamps();
+        return $this->belongsTo(EducationForm::class, 'education_form_id')->withTimestamps();
     }
 }

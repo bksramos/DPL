@@ -7,6 +7,9 @@ use Session;
 use App\Models\EducationForm;
 use App\Models\EducationFormDetail;
 use App\Models\EducationFormFinance;
+use App\Models\EducationFormJustification;
+use App\Models\EducationFormPrevious;
+use App\Models\EducationFormFeature;
 use Validator;
 use DB;
 class EducationFormController extends Controller
@@ -28,7 +31,7 @@ class EducationFormController extends Controller
 
         // return a view and pass in the above variable
         //dd($education_forms);
-        return view('education.index')->withEducationForms($educationForms);
+        return view('education-form.index')->withEducationForms($educationForms);
 
     }
 
@@ -39,7 +42,7 @@ class EducationFormController extends Controller
      */
     public function create()
     {
-        return view('education.create');
+        return view('education-form.create');
     }
 
     /**
@@ -50,174 +53,283 @@ class EducationFormController extends Controller
      */
     public function store(Request $request)
     {
-        //dd(request()->all());
-        $this->validate($request, array(
-                'plan'              => 'required|',
-                'mission_number'    => 'required|max:2',
-                'start_year'        => 'required|integer',
-                'pronouncing_organ' => 'required|',
-                'pronouncing_om'    => 'required|max:255',
-                'training_track'    => 'required|max:10',
-                'title'             => 'required|',
-                'establishment'     => 'required|',
-                'city'              => 'required|',
-                'state_id'          => 'required|',
-                'country'           => 'required|',
-                'dateline_start'    => 'required|date',
-                'dateline_finish'   => 'required|date',
-                'duration'          => 'required|',
-                'workload'          => 'required|'
-            ));
+        // dd($request->all());
+        /* criando array com todas as requisições que são feitas no formulário*/
+        $rules = array(
+        //education_forms
+        'plan'                       => 'required|',
+        'mission_number'             => 'required|max:2',
+        'start_year'                 => 'required|max:4',
+        'pronouncing_organ'          => 'required|',
+        'pronouncing_om'             => 'required|',
+        'training_track'             => 'required|',
+        'title'                      => 'required|max:100',
+        'establishment'              => 'required|',
+        'city'                       => 'required|',
+        'country'                    => 'required|',
+        'dateline_start'             => 'required|date',
+        'dateline_finish'            => 'required|date',
+        'duration'                   => 'required|',
+        'workload'                   => 'required|',
 
-        //store in database
-        
-        $education_form = new EducationForm;
+        //education_form_details part1
+        'goals'                      => 'required|',
+        'subject_description'        => 'required|',
+        'research_line'              => 'required|',
+        'similar_course'             => 'required|',
+        'institution_similar_course' => '|',
 
-        //dd($education_form);
+        //education_form_previouses
+        'of_gd.*'                    => '|',
+        'name.*'                     => '|',
+        'om.*'                       => '|',
+        'current_function.*'         => '|',
 
-        $education_form->plan              = $request->plan;
-        $education_form->mission_number    = $request->mission_number;
-        $education_form->start_year        = $request->start_year;
-        $education_form->pronouncing_organ = $request->pronouncing_organ;
-        $education_form->pronouncing_om    = $request->pronouncing_om;
-        $education_form->training_track    = $request->training_track;
-        $education_form->title             = $request->title;
-        $education_form->establishment     = $request->establishment;
-        $education_form->city              = $request->city;
-        $education_form->state_id          = $request->state_id;
-        $education_form->country           = $request->country;
-        $education_form->dateline_start    = $request->dateline_start;
-        $education_form->dateline_finish   = $request->dateline_finish;
-        $education_form->duration          = $request->duration;
-        $education_form->workload          = $request->workload;
+        //education_form_details part2
+        'importance'                 => 'required|',
+        'justification'              => 'required|',
+        'designated'                 => 'required|',
+        'vacancies_requested'        => 'required|',
+        'prerequisites'              => 'required|',
+        'destination_after_course'   => 'required|',
+        'function_after_course'      => 'required|',
+        'desired_training'           => 'required|',
+        'pac'                        => 'required|',
 
+        //education_form_finances
+        'cost_help.*'                => 'required|',
+        'salary.*'                   => 'required|',
+        'housing_assistance.*'       => 'required|',   
+        'baggage_transport.*'        => 'required|',   
+        'daily.*'                    => 'required|',
+        'personal_transport_1.*'     => 'required|',   
+        'personal_transport_2.*'     => 'required|',
+        'course_cost.*'              => 'required|',
+        'total_annual.*'             => 'required|',
+        'course_year.*'              => 'required|max:1',  
 
-        // dd($education_form);
+        //education_form_justifications
+        'detailed_justification'     => 'required|',
 
-        $education_form->save();
+        //education_form_features
+        'impact'                     => 'required|',
+        'mission_type'               => 'required|',
+        'institutional_commitments'  => 'required|',
+        'training_systems'           => 'required|',
+        'capacity_adherence'         => 'required|',
+        'rh_training'                => 'required|',
+        'bilateral'                  => 'required|',
+        );
 
-        Session::flash('success', 'Primeira parte PLAMENS preenchida com Sucesso!');
-
-        return redirect()->route('education.details', $education_form->id);
-    }
-
-    public function details($id)
-    {
-        $educationForms = EducationForm::find($id);
-        //dd($education_form);
-        return view('education.details')->withEducationForms($educationForms);
-    }
-
-    public function storeDetails(EducationForm $educationForms)
-    {
-        //dd(request()->all());
-        $data = request()->validate([
-                'goals'                          => 'required',
-                'subject_description'            => 'required',
-                'research_line'                  => 'required',
-                'similar_course'                 => 'required',
-                'similar_course_name'            => 'required',
-                'similar_course_last_5_years'    => 'required',
-                'importance'                     => 'required',
-                'justification'                  => 'required',
-                'designated_id'                  => 'required',
-                'vacancies_requested'            => 'required',
-                'prerequisites'                  => 'required',
-                'destination_after_course'       => 'required',
-                'function_after_course'          => 'required',
-                'desired_training'               => 'required',
-                'pac'                            => 'required',
-            ]);
-        $data['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
-        //dd($data);
-        
-        //dd($educationDetails);
-
-        $educationDetails = EducationFormDetail::create($data);
-
-        Session::flash('success', 'Segunda parte PLAMENS preenchida com Sucesso!');
-        //$educationForms = EducationForms::find($id);
-        return redirect()->route('education.finances', ['id' => $data['education_form_id']]);
-    }
-
-    public function finances($id)
-    {
-        $educationForms = EducationForm::find($id);
-        //dd($education_form);
-        return view('education.finances')->withEducationForms($educationForms);
-    }
-
-    public function storeFinances(EducationForm $educationForms, Request $request)
-    {
-        //dd(request()->ajax());
-        if ($request->all()) 
+        /*regra de erro de requisição, caso haja algum erro irá aparecer uma */
+        /* tela com as requisições ajax e o erro detectado */
+        $error = Validator::make($request->all(), $rules);
+        if($error->fails())
         {
-            $rules = array(
-                'cost_help.*'            =>    'required',
-                'salary.*'               =>    'required',
-                'housing_assistance.*'   =>    'required',
-                'baggage_transport.*'    =>    'required',
-                'daily.*'                =>    'required',
-                'personal_transport_1.*' =>    'required',
-                'personal_transport_2.*' =>    'required',
-                'course_cost.*'          =>    'required',
-                'total_annual.*'         =>    'required',
-                'course_year.*'          =>    'required',
-            );
-            $error = Validator::make($request->all(), $rules);
-            if($error->fails())
-            {
-                return response()->json([
-                    'error' =>  $error->errors()->all()
-                ]);
-            }
-
-            $cost_help =            $request->cost_help;
-            $salary =               $request->salary;
-            $housing_assistance =   $request->housing_assistance;
-            $baggage_transport =    $request->baggage_transport;
-            $daily =                $request->daily;
-            $personal_transport_1 = $request->personal_transport_1;
-            $personal_transport_2 = $request->personal_transport_2;
-            $course_cost =          $request->course_cost;
-            $total_annual =         $request->total_annual;
-            $course_year  =         $request->course_year;
-
-            for($count = 0; $count < count($cost_help); $count++)
-            {
-                $data = array(
-                    'cost_help' =>  $cost_help[$count],
-                    'salary' =>  $salary[$count],
-                    'housing_assistance' =>  $housing_assistance[$count],
-                    'baggage_transport' =>  $baggage_transport[$count],
-                    'daily' =>  $daily[$count],
-                    'personal_transport_1' =>  $personal_transport_1[$count],
-                    'personal_transport_2' =>  $personal_transport_2[$count],
-                    'course_cost' =>  $course_cost[$count],
-                    'total_annual' =>  $total_annual[$count],
-                    'course_year'  =>  $course_year[$count]
-                );
-
-                $data['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
-                //dd($data);
-
-                $insert_data[] = $data;
-            }
-            
-            EducationFormFinance::insert($insert_data);
-
-            return redirect()->route('education.justifications', ['id' => $data['education_form_id']]);
+            return response()->json([
+                'error' =>  $error->errors()->all()
+            ]);
         }
+
+        /* organziando as informações para passar os dados para o banco de dados */
+        //education_forms
+        $plan                       = $request->plan;
+        $mission_number             = $request->mission_number;
+        $start_year                 = $request->start_year;
+        $pronouncing_organ          = $request->pronouncing_organ;
+        $pronouncing_om             = $request->pronouncing_om;
+        $training_track             = $request->training_track;
+        $title                      = $request->title;
+        $establishment              = $request->establishment;
+        $city                       = $request->city;
+        $state                      = $request->state;
+        $country                    = $request->country;
+        $dateline_start             = $request->dateline_start;
+        $dateline_finish            = $request->dateline_finish;
+        $duration                   = $request->duration;
+        $workload                   = $request->workload;
+
+        //education_form_details part1
+        $goals                      = $request->goals;
+        $subject_description        = $request->subject_description;
+        $research_line              = $request->research_line;
+        $similar_course             = $request->similar_course;
+        $institution_similar_course = $request->institution_similar_course;
+
+        //education_form_previouses
+        $of_gd                      = $request->of_gd;
+        $name                       = $request->name;
+        $om                         = $request->om;
+        $current_function           = $request->current_function;
+
+        //education_form_details part2
+        $importance                 = $request->importance;
+        $justification              = $request->justification;
+        $designated                 = $request->designated;
+        $vacancies_requested        = $request->vacancies_requested;
+        $prerequisites              = $request->prerequisites;
+        $destination_after_course   = $request->destination_after_course;
+        $function_after_course      = $request->function_after_course;
+        $desired_training           = $request->desired_training;
+        $pac                        = $request->pac;
+
+        //education_form_finances
+        $cost_help                  = $request->cost_help;
+        $salary                     = $request->salary;
+        $housing_assistance         = $request->housing_assistance;
+        $baggage_transport          = $request->baggage_transport;
+        $daily                      = $request->daily;
+        $personal_transport_1       = $request->personal_transport_1;
+        $personal_transport_2       = $request->personal_transport_2;
+        $course_cost                = $request->course_cost;
+        $total_annual               = $request->total_annual;
+        $course_year                = $request->course_year;
+
+        //education_form_justifications
+        $detailed_justification = $request->detailed_justification;
+
+        //education_form_features
+        $impact                    = $request->impact;
+        $mission_type              = $request->mission_type;
+        $institutional_commitments = $request->institutional_commitments;
+        $training_systems          = $request->training_systems;
+        $capacity_adherence        = $request->capacity_adherence;
+        $rh_training               = $request->rh_training;
+        $bilateral                 = $request->bilateral;
+        
+
+        /* organizando os dados que irão para a tabela education_forms */
+        $data1 = array(
+            'plan'                   => $plan,
+            'mission_number'         => $mission_number,
+            'start_year'             => $start_year,
+            'pronouncing_organ'      => $pronouncing_organ,
+            'pronouncing_om'         => $pronouncing_om,
+            'training_track'         => $training_track,
+            'title'                  => $title,
+            'establishment'          => $establishment,
+            'city'                   => $city,
+            'state'                  => $state,
+            'country'                => $country,
+            'dateline_start'         => $dateline_start,
+            'dateline_finish'        => $dateline_finish,
+            'duration'               => $duration,
+            'workload'               => $workload,
+            'created_at'             => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'             => date("Y-m-d H:i:s", strtotime('now'))
+        );
+
+        // dd($data1);
+
+        $education_form = new EducationForm;
+        $insert_data1[] = $data1;
+
+        EducationForm::insert($insert_data1);
+
+        /* organizando os dados que irão para a tabela education_form_details */
+        $data2 = array(
+            'goals'                      => $goals,
+            'subject_description'        => $subject_description,
+            'research_line'              => $research_line,
+            'similar_course'             => $similar_course,
+            'institution_similar_course' => $institution_similar_course,
+            'importance'                 => $importance,
+            'justification'              => $justification,
+            'designated'                 => $designated,
+            'vacancies_requested'        => $vacancies_requested,
+            'prerequisites'              => $prerequisites,
+            'destination_after_course'   => $destination_after_course,
+            'function_after_course'      => $function_after_course,
+            'desired_training'           => $desired_training,
+            'pac'                        => $pac,
+            'created_at'                 => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                 => date("Y-m-d H:i:s", strtotime('now'))
+        );
+        $data2['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
+
+        $education_form_details = new EducationFormDetail;
+        $insert_data2[] = $data2;
+
+        EducationFormDetail::insert($insert_data2);
+
+        /* organizando os dados que irão para a tabela education_form_justifications */
+        $data3 = array(
+            'detailed_justification'    => $detailed_justification,
+            'created_at'                => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                => date("Y-m-d H:i:s", strtotime('now'))
+        );
+        $data3['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
+
+        $education_form_justifications = new EducationFormJustification;
+        $insert_data3[] = $data3;
+
+        EducationFormJustification::insert($insert_data3);
+
+
+        /* organizando os dados que irão para a tabela education_form_features */
+        $data4 = array(
+            'impact'                    => $impact,
+            'mission_type'              => $mission_type,
+            'institutional_commitments' => $institutional_commitments,
+            'training_systems'          => $training_systems,
+            'capacity_adherence'        => $capacity_adherence,
+            'rh_training'               => $rh_training,
+            'bilateral'                 => $bilateral,
+            'created_at'                => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                => date("Y-m-d H:i:s", strtotime('now'))
+        );
+        $data4['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
+
+        $education_form_features = new EducationFormFeature;
+        $insert_data4[] = $data4;
+
+        EducationFormFeature::insert($insert_data4);
+
+        /* organizando os dados para os campos dinâmicos */
+
+        /* dados da tabela education_form_previouses */
+        for($count = 0; $count < count($of_gd); $count++)
+        {
+            $data5 = array(
+                'of_gd'              =>  $of_gd[$count],
+                'name'               =>  $name[$count],
+                'om'                 =>  $om[$count],
+                'current_function'   =>  $current_function[$count],
+                'created_at'         => date("Y-m-d H:i:s", strtotime('now')),
+                'updated_at'         => date("Y-m-d H:i:s", strtotime('now')),
+            );
+
+            $data5['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
+            $insert_data5[] = $data5;
+        }
+        EducationFormPrevious::insert($insert_data5);
+
+        /* dados da tabela education_form_finances */
+        for($count = 0; $count < count($cost_help); $count++)
+        {
+            $data6 = array(
+                'cost_help' =>  $cost_help[$count],
+                'salary' =>  $salary[$count],
+                'housing_assistance' =>  $housing_assistance[$count],
+                'baggage_transport' =>  $baggage_transport[$count],
+                'daily' =>  $daily[$count],
+                'personal_transport_1' =>  $personal_transport_1[$count],
+                'personal_transport_2' =>  $personal_transport_2[$count],
+                'course_cost' =>  $course_cost[$count],
+                'total_annual' =>  $total_annual[$count],
+                'course_year'  =>  $course_year[$count],
+                'created_at' => date("Y-m-d H:i:s", strtotime('now')),
+                'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
+            );
+
+            $data6['education_form_id'] = DB::table('education_forms')->orderBy('id', 'desc')->first()->id;
+            $insert_data6[] = $data6;
+        }
+        EducationFormFinance::insert($insert_data6);
+
+        // return response()->json(['success'=>'Ajax request submitted successfully']);
+        return redirect()->route('education-form.index');
     }
-
-    public function justifications($id)
-    {
-        $educationForms = EducationForm::find($id);
-        //dd($education_form);
-        return view('education.justifications')->withEducationForms($educationForms);
-    }
-
-
 
     /**
      * Display the specified resource.
@@ -228,7 +340,14 @@ class EducationFormController extends Controller
     public function show($id)
     {
         $education_form = EducationForm::find($id);
-        return view('education.show')->withEducationForm($education_form);
+
+        $education_form_details = $education_form->EducationFormDetails()->get();
+        $education_form_justifications = $education_form->EducationFormJustifications()->get();
+        $education_form_previouses = $education_form->EducationFormPreviouses()->get();
+        $education_form_finances = $education_form->EducationFormFinances()->get();
+        $education_form_features = $education_form->EducationFormFeatures()->get();
+        // dd($education_form_details);
+        return view('education-form.show', compact('education_form', 'education_form_details', 'education_form_justifications', 'education_form_previouses', 'education_form_finances', 'education_form_features'));
     }
 
     /**
@@ -237,9 +356,17 @@ class EducationFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($education_form)
     {
-        //
+        $education_form_details         = EducationForm::find($education_form)->EducationFormDetails;
+        $education_form_justifications  = EducationForm::find($education_form)->EducationFormJustifications;
+        $education_form_features        = EducationForm::find($education_form)->EducationFormFeatures;
+        $education_form_previouses      = EducationForm::find($education_form)->EducationFormPreviouses;
+        $education_form_finances        = EducationForm::find($education_form)->EducationFormFinances;
+        $education_form                 = EducationForm::find($education_form);    
+        // dd($education_form_features);
+
+        return view('education-form.edit', compact('education_form', 'education_form_details', 'education_form_justifications', 'education_form_features', 'education_form_previouses', 'education_form_finances'));
     }
 
     /**
@@ -251,7 +378,290 @@ class EducationFormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $education_form = EducationForm::find($id);
+        
+        /* criando array com todas as requisições que são feitas no formulário*/
+        $rules = array(
+        //education_forms
+        'plan'                       => 'required|',
+        'mission_number'             => 'required|max:2',
+        'start_year'                 => 'required|max:4',
+        'pronouncing_organ'          => 'required|',
+        'pronouncing_om'             => 'required|',
+        'training_track'             => 'required|',
+        'title'                      => 'required|max:100',
+        'establishment'              => 'required|',
+        'city'                       => 'required|',
+        'country'                    => 'required|',
+        'dateline_start'             => 'required|date',
+        'dateline_finish'            => 'required|date',
+        'duration'                   => 'required|',
+        'workload'                   => 'required|',
+
+        //education_form_details part1
+        'goals'                      => 'required|',
+        'subject_description'        => 'required|',
+        'research_line'              => 'required|',
+        'similar_course'             => 'required|',
+        'institution_similar_course' => '|',
+
+        //education_form_previouses
+        'of_gd.*'                    => '|',
+        'name.*'                     => '|',
+        'om.*'                       => '|',
+        'current_function.*'         => '|',
+
+        //education_form_details part2
+        'importance'                 => 'required|',
+        'justification'              => 'required|',
+        'designated'                 => 'required|',
+        'vacancies_requested'        => 'required|',
+        'prerequisites'              => 'required|',
+        'destination_after_course'   => 'required|',
+        'function_after_course'      => 'required|',
+        'desired_training'           => 'required|',
+        'pac'                        => 'required|',
+
+        //education_form_finances
+        'cost_help.*'                => 'required|',
+        'salary.*'                   => 'required|',
+        'housing_assistance.*'       => 'required|',   
+        'baggage_transport.*'        => 'required|',   
+        'daily.*'                    => 'required|',
+        'personal_transport_1.*'     => 'required|',   
+        'personal_transport_2.*'     => 'required|',
+        'course_cost.*'              => 'required|',
+        'total_annual.*'             => 'required|',
+        'course_year.*'              => 'required|max:1',  
+
+        //education_form_justifications
+        'detailed_justification'     => 'required|',
+
+        //education_form_features
+        'impact'                     => 'required|',
+        'mission_type'               => 'required|',
+        'institutional_commitments'  => 'required|',
+        'training_systems'           => 'required|',
+        'capacity_adherence'         => 'required|',
+        'rh_training'                => 'required|',
+        'bilateral'                  => 'required|',
+        );
+
+        /*regra de erro de requisição, caso haja algum erro irá aparecer uma */
+        /* tela com as requisições ajax e o erro detectado */
+        $error = Validator::make($request->all(), $rules);
+        if($error->fails())
+        {
+            return response()->json([
+                'error' =>  $error->errors()->all()
+            ]);
+        }
+
+        /* organziando as informações para passar os dados para o banco de dados */
+        //education_forms
+        $plan                       = $request->plan;
+        $mission_number             = $request->mission_number;
+        $start_year                 = $request->start_year;
+        $pronouncing_organ          = $request->pronouncing_organ;
+        $pronouncing_om             = $request->pronouncing_om;
+        $training_track             = $request->training_track;
+        $title                      = $request->title;
+        $establishment              = $request->establishment;
+        $city                       = $request->city;
+        $state                      = $request->state;
+        $country                    = $request->country;
+        $dateline_start             = $request->dateline_start;
+        $dateline_finish            = $request->dateline_finish;
+        $duration                   = $request->duration;
+        $workload                   = $request->workload;
+
+        //education_form_details part1
+        $goals                      = $request->goals;
+        $subject_description        = $request->subject_description;
+        $research_line              = $request->research_line;
+        $similar_course             = $request->similar_course;
+        $institution_similar_course = $request->institution_similar_course;
+
+        //education_form_previouses
+        $of_gd                      = $request->of_gd;
+        $name                       = $request->name;
+        $om                         = $request->om;
+        $current_function           = $request->current_function;
+
+        //education_form_details part2
+        $importance                 = $request->importance;
+        $justification              = $request->justification;
+        $designated                 = $request->designated;
+        $vacancies_requested        = $request->vacancies_requested;
+        $prerequisites              = $request->prerequisites;
+        $destination_after_course   = $request->destination_after_course;
+        $function_after_course      = $request->function_after_course;
+        $desired_training           = $request->desired_training;
+        $pac                        = $request->pac;
+
+        //education_form_finances
+        $cost_help                  = $request->cost_help;
+        $salary                     = $request->salary;
+        $housing_assistance         = $request->housing_assistance;
+        $baggage_transport          = $request->baggage_transport;
+        $daily                      = $request->daily;
+        $personal_transport_1       = $request->personal_transport_1;
+        $personal_transport_2       = $request->personal_transport_2;
+        $course_cost                = $request->course_cost;
+        $total_annual               = $request->total_annual;
+        $course_year                = $request->course_year;
+
+        //education_form_justifications
+        $detailed_justification = $request->detailed_justification;
+
+        //education_form_features
+        $impact                    = $request->impact;
+        $mission_type              = $request->mission_type;
+        $institutional_commitments = $request->institutional_commitments;
+        $training_systems          = $request->training_systems;
+        $capacity_adherence        = $request->capacity_adherence;
+        $rh_training               = $request->rh_training;
+        $bilateral                 = $request->bilateral;
+        
+
+        /* organizando os dados que irão para a tabela education_forms */
+        $data1 = array(
+            'plan'                   => $plan,
+            'mission_number'         => $mission_number,
+            'start_year'             => $start_year,
+            'pronouncing_organ'      => $pronouncing_organ,
+            'pronouncing_om'         => $pronouncing_om,
+            'training_track'         => $training_track,
+            'title'                  => $title,
+            'establishment'          => $establishment,
+            'city'                   => $city,
+            'state'                  => $state,
+            'country'                => $country,
+            'dateline_start'         => $dateline_start,
+            'dateline_finish'        => $dateline_finish,
+            'duration'               => $duration,
+            'workload'               => $workload,
+            'created_at'             => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'             => date("Y-m-d H:i:s", strtotime('now'))
+        );
+
+        // dd($data1);
+        $insert_data1[] = $data1;
+        $education_form = EducationForm::find($id);
+        $education_form->fill($data1);
+        $education_form->save();
+
+
+        /* organizando os dados que irão para a tabela education_form_details */
+        $data2 = array(
+            'goals'                      => $goals,
+            'subject_description'        => $subject_description,
+            'research_line'              => $research_line,
+            'similar_course'             => $similar_course,
+            'institution_similar_course' => $institution_similar_course,
+            'importance'                 => $importance,
+            'justification'              => $justification,
+            'designated'                 => $designated,
+            'vacancies_requested'        => $vacancies_requested,
+            'prerequisites'              => $prerequisites,
+            'destination_after_course'   => $destination_after_course,
+            'function_after_course'      => $function_after_course,
+            'desired_training'           => $desired_training,
+            'pac'                        => $pac,
+            'created_at'                 => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                 => date("Y-m-d H:i:s", strtotime('now'))
+        );
+        
+        $insert_data2[] = $data2;
+
+        // EducationFormDetail::where('education_form_id', $education_form()->id)->update($data2);
+
+        $education_form_details = EducationFormDetail::where('education_form_id', $education_form->id)->first();
+        $education_form_details->fill($data2);
+        $education_form_details->save();
+
+        /* organizando os dados que irão para a tabela education_form_justifications */
+        $data3 = array(
+            'detailed_justification'    => $detailed_justification,
+            'created_at'                => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                => date("Y-m-d H:i:s", strtotime('now'))
+        );
+        
+        $insert_data3[] = $data3;
+
+        $education_form_justifications = EducationFormJustification::where('education_form_id', $education_form->id)->first();
+        $education_form_justifications->fill($data3);
+        $education_form_justifications->save();
+
+        /* organizando os dados que irão para a tabela education_form_features */
+        $data4 = array(
+            'impact'                    => $impact,
+            'mission_type'              => $mission_type,
+            'institutional_commitments' => $institutional_commitments,
+            'training_systems'          => $training_systems,
+            'capacity_adherence'        => $capacity_adherence,
+            'rh_training'               => $rh_training,
+            'bilateral'                 => $bilateral,
+            'created_at'                => date("Y-m-d H:i:s", strtotime('now')),
+            'updated_at'                => date("Y-m-d H:i:s", strtotime('now'))
+        );
+
+        $insert_data4[] = $data4;
+
+        $education_form_features = EducationFormFeature::where('education_form_id', $education_form->id)->first();
+        $education_form_features->fill($data4);
+        $education_form_features->save();
+
+        /* organizando os dados para os campos dinâmicos */
+
+        /* dados da tabela education_form_previouses */
+        for($count = 0; $count < count($of_gd); $count++)
+        {
+            $data5 = array(
+                'of_gd'              =>  $of_gd[$count],
+                'name'               =>  $name[$count],
+                'om'                 =>  $om[$count],
+                'current_function'   =>  $current_function[$count],
+                'created_at'         => date("Y-m-d H:i:s", strtotime('now')),
+                'updated_at'         => date("Y-m-d H:i:s", strtotime('now')),
+            );
+
+            $insert_data5[] = $data5;
+        }
+        EducationFormPrevious::where('education_form_id', $education_form->id)->update($data5);
+        // $education_form_previouses = EducationFormPrevious::where('education_form_id', $education_form->id)->first();
+        // $education_form_previouses->fill($data5);
+        // $education_form_previouses->save();
+
+        /* dados da tabela education_form_finances */
+        for($count = 0; $count < count($cost_help); $count++)
+        {
+            $data6 = array(
+                'cost_help' =>  $cost_help[$count],
+                'salary' =>  $salary[$count],
+                'housing_assistance' =>  $housing_assistance[$count],
+                'baggage_transport' =>  $baggage_transport[$count],
+                'daily' =>  $daily[$count],
+                'personal_transport_1' =>  $personal_transport_1[$count],
+                'personal_transport_2' =>  $personal_transport_2[$count],
+                'course_cost' =>  $course_cost[$count],
+                'total_annual' =>  $total_annual[$count],
+                'course_year'  =>  $course_year[$count],
+                'created_at' => date("Y-m-d H:i:s", strtotime('now')),
+                'updated_at' => date("Y-m-d H:i:s", strtotime('now')),
+            );
+
+            $insert_data6[] = $data6;
+        }
+        $education_form_finances = EducationFormFinance::where('education_form_id', $education_form->id)->first();
+        $education_form_finances->fill($data6);
+        $education_form_finances->save();
+
+        // dd($request->all());
+        
+        // return response()->json(['success'=>'Atualizado com sucesso']);
+
+        return redirect()->route('education-form.index', compact('education_form', 'education_form_details', 'education_form_justifications', 'education_form_features', 'education_form_finances'));
     }
 
     /**
@@ -265,69 +675,5 @@ class EducationFormController extends Controller
         //
     }
 
-    public function insert(Request $request)
-    {
-
-        dd(request()->all());
-        if ($request->ajax()) 
-        {
-            $rules = array(
-                'cost_help.*'            =>    'required',
-                'salary.*'               =>    'required',
-                'housing_assistance.*'   =>    'required',
-                'baggage_transport.*'    =>    'required',
-                'daily.*'                =>    'required',
-                'personal_transport_1.*' =>    'required',
-                'personal_transport_2.*' =>    'required',
-                'course_cost.*'          =>    'required',
-                'total_annual.*'         =>    'required',
-                'course_year.*'          =>    'required',
-            );
-            $error = Validator::make($request->all(), $rules);
-            if($error->fails())
-            {
-                return response()->json([
-                    'error' =>  $error->errors()->all()
-                ]);
-            }
-
-            $cost_help =            $request->cost_help;
-            $salary =               $request->salary;
-            $housing_assistance =   $request->housing_assistance;
-            $baggage_transport =    $request->baggage_transport;
-            $daily =                $request->daily;
-            $personal_transport_1 = $request->personal_transport_1;
-            $personal_transport_2 = $request->personal_transport_2;
-            $course_cost =          $request->course_cost;
-            $total_annual =         $request->total_annual;
-            $course_year  =         $request->course_year;
-
-            for($count = 0; $count < count($first_name); $count++)
-            {
-                $data = array(
-                    'cost_help' =>  $cost_help[$count],
-                    'salary' =>  $salary[$count],
-                    'housing_assistance' =>  $housing_assistance[$count],
-                    'baggage_transport' =>  $baggage_transport[$count],
-                    'daily' =>  $daily[$count],
-                    'personal_transport_1' =>  $personal_transport_1[$count],
-                    'personal_transport_2' =>  $personal_transport_2[$count],
-                    'course_cost' =>  $course_cost[$count],
-                    'total_annual' =>  $total_annual[$count],
-                    'course_year'  =>  $course_year[$count]
-                );
-
-                $data['education_form_id'] = EducationForm::find($id);
-                $insert_data[] = $data;
-            }
-            
-            EducationFormFinance::insert($insert_data);
-
-            return response()->json([
-                'success'      =>   'Data Added Successfully!'
-            ]);
-        }
-    }
-
-
 }
+// EducationFormPrevious::where('education_form_id', education_form()->id)->update($data5);

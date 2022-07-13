@@ -22,6 +22,6 @@ class EducationFormFinance extends Model
 
     public function EducationForms()
     {
-        return $this->belongsTo(EducationForm::class)->withTimestamps();
+        return $this->belongsTo(EducationForm::class, 'education_form_id')->withTimestamps();
     }
 }

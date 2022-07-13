@@ -24,7 +24,7 @@ class CreateEducationFormsTable extends Migration
             $table->string('title');
             $table->string('establishment');
             $table->string('city');
-            $table->string('state_id');
+            $table->string('state');
             $table->string('country');
             $table->date('dateline_start');
             $table->date('dateline_finish');

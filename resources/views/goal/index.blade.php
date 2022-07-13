@@ -29,6 +29,12 @@
         <div class="row">
             <div class="col-md-12">
                 <table class="table">
+                    @foreach ($goalForms as $goalForm)
+                    <thead>
+                        <th>Ano</th> <td>{{ $goalForm->year }}</td>
+                    </thead>
+
+
                     <thead>
                         <th>Divisão</th>
                         <th>Descrição</th>
@@ -40,7 +46,7 @@
                         <th></th>
                     </thead>
                     <tbody>
-                    @foreach ($goalForms as $goalForm)
+                    
                         <tr>
                             <td>{{ $goalForm->division }}</td>
                             <td>{{ $goalForm->description }}</td>
@@ -62,7 +68,8 @@
                             </td>
                             </td>
                         </tr>
-                    @endforeach
+                    
+                    @endforeach 
                     </tbody>
                 </table>
             </div>

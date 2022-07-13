@@ -32,4 +32,16 @@ class EducationForm extends Model
     {
         return $this->hasMany(EducationFormQuestion::class);
     }
+
+    /** Defining relations with EducationFormPrevious */
+    public function EducationFormPreviouses()
+    {
+        return $this->hasMany(EducationFormPrevious::class);
+    }
+
+    /** Defining relations with EducationFormFeature */
+    public function EducationFormFeatures()
+    {
+        return $this->hasOne(EducationFormFeature::class);
+    }
 }

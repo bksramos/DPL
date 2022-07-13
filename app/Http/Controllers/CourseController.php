@@ -70,7 +70,6 @@ class CourseController extends Controller
             // $location = public_path('dashboards/' . $filename);
             // Storage::disk($location);
 
-
             $location = public_path('dashboards/');
             $dashboard->move($location,  $filename);
 

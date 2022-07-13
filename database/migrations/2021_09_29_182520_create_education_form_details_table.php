@@ -20,11 +20,10 @@ class CreateEducationFormDetailsTable extends Migration
             $table->longText('subject_description');
             $table->string('research_line')->nullable();
             $table->boolean('similar_course');
-            $table->string('similar_course_name')->nullable();
-            $table->string('similar_course_last_5_years')->nullable();
+            $table->string('institution_similar_course')->nullable();
             $table->string('importance');
             $table->longText('justification');
-            $table->integer('designated_id');
+            $table->string('designated');
             $table->double('vacancies_requested',2,0);
             $table->string('prerequisites');
             $table->string('destination_after_course');
