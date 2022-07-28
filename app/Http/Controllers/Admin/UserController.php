@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Section;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -29,12 +30,19 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if(Auth::user()->id == $id){
-            return redirect()->route('admin.users.index');
-        }
+        // if(Auth::user()->id == $id){
+        //     return redirect()->route('admin.users.index');
+        // }
 
         return view('admin.users.edit')->with(['user' => User::find($id), 'roles' => Role::all(), 
                                                 'sections' => Section::all() ]);
+    }
+
+    public function profile(User $user)
+    {
+        $user = Auth::user(); 
+        // dd($user->roles);
+        return view('admin.users.profile')->withUser($user);
     }
 
     /**
@@ -57,6 +65,41 @@ class UserController extends Controller
         $user->update();
         //dd($user);
 
+        return redirect()->route('admin.users.index');
+    }
+
+    public function update_profile(User $user, Request $request)
+    {
+
+        $user = Auth::user(); 
+
+        $user->war_name = $request->input('war_name');
+        $user->birthday = $request->input('birthday');
+        $user->about = $request->input('about');
+        $user->phone = $request->input('phone');
+        $user->cell_phone = $request->input('cell_phone');
+        $user->email = $request->input('email');
+
+        //save image
+        if ($request->hasfile('featured_photo')) {
+            //add new report
+            $user_photo = $request->file('featured_photo');
+            $filename = time() . '.' . $user_photo->getClientOriginalExtension();
+
+            $location = public_path('photos/');
+            $user_photo->move($location, $filename);
+
+            $oldPhoto = $user->user_photo;
+            //update the database
+
+            $user->user_photo = $filename;
+            //delete the old photo
+            Storage::delete($oldPhoto);
+        }
+
+        // dd($user);
+        $user->save();
+        
         return redirect()->route('admin.users.index');
     }
     /**

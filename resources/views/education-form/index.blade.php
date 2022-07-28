@@ -2,10 +2,10 @@
 
 @section('content')
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet">
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
 </head>
 
 
@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="card-body">
-                <a class="btn btn-info" href="/education-form/create">Criar FPM</a>
+                <a class="btn btn-info" href="/education-form/create">Criar FPM PLAMENS</a>
             </div>
         </div>
 

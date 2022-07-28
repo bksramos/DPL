@@ -327,7 +327,6 @@ class EducationFormController extends Controller
         }
         EducationFormFinance::insert($insert_data6);
 
-        // return response()->json(['success'=>'Ajax request submitted successfully']);
         return redirect()->route('education-form.index');
     }
 
@@ -545,7 +544,6 @@ class EducationFormController extends Controller
             'updated_at'             => date("Y-m-d H:i:s", strtotime('now'))
         );
 
-        // dd($data1);
         $insert_data1[] = $data1;
         $education_form = EducationForm::find($id);
         $education_form->fill($data1);
@@ -573,8 +571,6 @@ class EducationFormController extends Controller
         );
         
         $insert_data2[] = $data2;
-
-        // EducationFormDetail::where('education_form_id', $education_form()->id)->update($data2);
 
         $education_form_details = EducationFormDetail::where('education_form_id', $education_form->id)->first();
         $education_form_details->fill($data2);
@@ -629,9 +625,6 @@ class EducationFormController extends Controller
             $insert_data5[] = $data5;
         }
         EducationFormPrevious::where('education_form_id', $education_form->id)->update($data5);
-        // $education_form_previouses = EducationFormPrevious::where('education_form_id', $education_form->id)->first();
-        // $education_form_previouses->fill($data5);
-        // $education_form_previouses->save();
 
         /* dados da tabela education_form_finances */
         for($count = 0; $count < count($cost_help); $count++)
@@ -657,10 +650,6 @@ class EducationFormController extends Controller
         $education_form_finances->fill($data6);
         $education_form_finances->save();
 
-        // dd($request->all());
-        
-        // return response()->json(['success'=>'Atualizado com sucesso']);
-
         return redirect()->route('education-form.index', compact('education_form', 'education_form_details', 'education_form_justifications', 'education_form_features', 'education_form_finances'));
     }
 
@@ -672,8 +661,16 @@ class EducationFormController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $education_form = EducationForm::find($id);
+        $education_form->EducationFormFinances()->delete();
+        $education_form->EducationFormDetails()->delete();
+        $education_form->EducationFormJustifications()->delete();
+        $education_form->EducationFormPreviouses()->delete();
+        $education_form->EducationFormFeatures()->delete();
+        $education_form->delete();
+
+        Session::flash('success', 'O curso foi deletado com sucesso');
+        return redirect()->route('education-form.index');
     }
 
 }
-// EducationFormPrevious::where('education_form_id', education_form()->id)->update($data5);

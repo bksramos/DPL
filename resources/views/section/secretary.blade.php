@@ -13,8 +13,10 @@
             <h1 align="center"> Secretaria DPL </h1>
             <br>
             <div class="panel-body">
-                A Divisão de Planejamento (DPL) do Centro de Inteligência da Aeronáutica (CIAER) é responsável por orientar, coordenar e controlar estudos e propor medias que visem ao desenvolvimento e ao fortalecimento da atividade de Inteligência no COMAER;
-                Através de atividades que envolvem planejamento, execução e avaliação de Cursos na área de Inteligência, orientações psicológicas, análises estatísticas, agendamentos de briefings para missões no exterior e constante atualizações de normas e regimentos a DPL como apoio para Produção e Proteção do Conhecimento acessorando a toamda de decisão no CIAER e no SINTAER.
+                A secretaria (SEC) é responsável por: <br>
+            - executar atividades internas de expediente e suporte administrativo à Divisão;<br>
+            - interagir com a DAD nos assuntos orçamentários, financeiros, patrimoniais e administrativos da Divisão; e <br>
+            - elaborar e atualizar os atos normativos internos da Divisão em coordenação com as demais Seções da DPL.
             </div>
             </section>
         </div>

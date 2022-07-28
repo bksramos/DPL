@@ -16,7 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'war_name', 'status', 'birthday', 'phone', 'cell_phone',
+         'about', 'user_photo', 'email', 'password'
     ];
 
     /**
@@ -61,12 +62,12 @@ class User extends Authenticatable
 
     public function hasAnySections($sections)
     {
-        return null !== $this->sections()->whereIn('name', $sections)->first();
+        return null !== $this->sections()->whereIn('initials', $sections)->first();
     }
 
     public function hasAnySection($section)
     {
-        return null !== $this->sections()->where('name', $section)->first();
+        return null !== $this->sections()->where('initials', $section)->first();
     }
 
 }

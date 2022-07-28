@@ -29,10 +29,10 @@
                     <li><a class="" href="{{ route('section.index') }}">Efetivo</a></li>
                     <li><a class="" href="{{ route('section.headship') }}">Chefia DPL</a></li>
                     <li><a class="" href="{{ route('section.secretary') }}">Secretaria DPL</a></li>
-                    <li><a class="" href="/section/SDO">SDO</a></li>
-                    <li><a class="" href="/section/SEN">SEN</a></li>
-                    <li><a class="" href="/section/SRH">SRH</a></li>
-                    <li><a class="" href="/section/SED">SED</a></li>
+                    <li><a class="" href="{{ route('section.SDO') }}">SDO</a></li>
+                    <li><a class="" href="{{ route('section.SEN') }}">SEN</a></li>
+                    <li><a class="" href="{{ route('section.SRH') }}">SRH</a></li>
+                    <li><a class="" href="{{ route('section.SED') }}">SED</a></li>
                     @if(Auth::user()->hasAnyRole('admin'))
                     <li><a class="" href="/section/create">Criar Seções</a></li>
                     @endif
@@ -53,7 +53,7 @@
 
             </li>
 
-            @if(Auth::user()->hasAnyRole('admin'))
+            
             <li class="sub-menu">
                 <a href="javascript:;" class="">
                     <i class="icon_table"></i>
@@ -61,11 +61,14 @@
                     <span class="menu-arrow arrow_carrot-right"></span>
                 </a>
                 <ul class="sub">
+                    @if(Auth::user()->hasAnyRole('admin'))
                     <li><a class="" href="{{route('admin.users.index')}}">Editar Usuários</a></li>
-                    <li><a class="" href="basic_table.html">Basic Table</a></li>
+                    @endif
+                    <li><a class="" href="{{route('users.profile')}}">Perfil do Usuário</a></li>
                 </ul>
             </li>
 
+            @if(Auth::user()->hasAnyRole('admin'))
             <li class="sub-menu">
                 <a href="javascript:;" class="">
                     <i class="icon_table"></i>

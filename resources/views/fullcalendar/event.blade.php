@@ -2,10 +2,10 @@
 
 @section('content')
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet">
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
 </head>
 
 
@@ -20,6 +20,11 @@
                 </ol>
             </div>
         </div>
+        <div class="row">
+            <div class="card-body">
+                <a class="btn btn-info" href="{{ route('fullcalendar') }}">Gerenciar Eventos</a>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -29,7 +34,7 @@
                         <th>Tipo</th>
                         <th>Início</th>
                         <th>Término</th>
-                        <th>Criado em</th>
+                        <th>Descrição</th>
                     </thead>
                     <tbody>
                     @foreach ($event as $event)
@@ -38,10 +43,7 @@
                             <td>{{ $event->type }}</td>
                             <td>{{ $event->start }}</td>                       
                             <td>{{ $event->end }}</td>
-                            <td>{{ date( 'M j, Y', strtotime($event->created_at)) }}</td>
-                            <td><a href="{{ route('event-edit.edit', $event->id) }}" class="btn btn-default btn-sm">View</a> <a href="{{ route('event-edit.edit', $event->id) }}" class="btn btn-default btn-sm">Edit</a> </td>
-                            </td>
-                            </td>
+                            <td>{{ $event->description }}</td>
                         </tr>
                     @endforeach
                     </tbody>

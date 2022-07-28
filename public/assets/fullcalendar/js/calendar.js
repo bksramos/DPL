@@ -84,13 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
       $("#modalCalendar #titleModal").text('Alterar Evento');
       $("#modalCalendar button.deleteEvent").css("display", "flex");
 
+      // console.log(element);
+
       let id = element.event.id;
       $("#modalCalendar input[name='id']").val(id);
 
       let title = element.event.title;
       $("#modalCalendar input[name='title']").val(title);
 
-      let type = element.event.type;
+      let type = element.event.extendedProps.type;
       $("#modalCalendar select[name='type']").val(type);
 
       let start = moment(element.event.start).format("DD/MM/YYYY HH:mm:ss");

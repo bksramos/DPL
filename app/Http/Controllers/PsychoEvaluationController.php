@@ -216,4 +216,13 @@ class PsychoEvaluationController extends Controller
         return view('psycho.profile')->withPsychoEvaluation($psychoEvaluations);
     }
 
+    public function sgc()
+    {
+        return view('psycho.sgc');
+    }
+
+    public function adidos()
+    {
+        return view('psycho.adidos');
+    }
 }

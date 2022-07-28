@@ -56,7 +56,7 @@ class CourseController extends Controller
         
         $course = new Course;
 
-        // dd($course);
+        // dd($request);
 
         $course->title = $request->title;
         $course->initials = $request->initials;

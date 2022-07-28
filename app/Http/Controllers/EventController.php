@@ -64,4 +64,15 @@ class EventController extends Controller
         // dd($event);
         return view('fullcalendar.event')->withEvent($event);
     }
+
+    public function pfv()
+    {
+        $event = DB::table('events')
+             ->select('id', 'title', 'type', 'start',
+                      'end', 'color', 'description', 'created_at', 'updated_at')
+             ->where('type', '=', 'PFV')
+             ->get();
+        // dd($event);
+        return view('fullcalendar.event')->withEvent($event);
+    }
 }

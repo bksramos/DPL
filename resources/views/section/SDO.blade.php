@@ -13,8 +13,12 @@
             <h1 align="center"> Seção de Doutrina - SDO </h1>
             <br>
             <div class="panel-body">
-                A Divisão de Planejamento (DPL) do Centro de Inteligência da Aeronáutica (CIAER) é responsável por orientar, coordenar e controlar estudos e propor medias que visem ao desenvolvimento e ao fortalecimento da atividade de Inteligência no COMAER;
-                Através de atividades que envolvem planejamento, execução e avaliação de Cursos na área de Inteligência, orientações psicológicas, análises estatísticas, agendamentos de briefings para missões no exterior e constante atualizações de normas e regimentos a DPL como apoio para Produção e Proteção do Conhecimento acessorando a toamda de decisão no CIAER e no SINTAER.
+                A Seção de Doutrina (SDO) é responsável por:
+            - Manter atualizada a Doutrina de Inteligência da Aeronáutica; <br>
+            - Manter atualizadas as legislações que orientam a Atividade de Inteligência no COMAER, em coordenação com as demais Divisões do CIAER;<br>
+            - Preparar as legislações produzidas pelo CIAER, gerenciando todo o processo para publicação, bem como encaminhar os documentos originais para o Arquivo do CIAER;<br>
+            - Manter arquivadas as cópias das legislações e as publicações normativas e doutrinárias pertinentes à Atividade de Inteligência do SINTAER, SINDE e SISBIN; e <br>
+            - Coordenar e executar o Programa de Fortalecimento de Valores (PFV) do CIAER.
             </div>
             </section>
         </div>
@@ -27,7 +31,7 @@
     <div class="row">
         <div class="col-md-6" align="center">
             <h3 align="center">Programa de Fortalecimento de Valores</h3>
-            <a href="{{ route('education.index') }}">
+            <a href="{{ route('pfv') }}">
                 <img src="/img/sections/SDO/PFV.png" alt="PFV" width="400" height="300">
             </a>
         </div>

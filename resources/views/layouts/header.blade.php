@@ -222,10 +222,10 @@
             <!-- user login dropdown start-->
             <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
-                            </span>
-                    <span class="username">{{ Auth::user()->name }}</span>
+                        <span class="profile-ava">
+                            <embed src="{{URL::to('/photos/'.Auth::user()->user_photo)}}" width="25" height="25" ></embed>
+                        </span>
+                    <span class="username">{{ Auth::user()->war_name }}</span>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu extended logout">

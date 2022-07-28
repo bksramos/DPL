@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
-use App\Models\Section;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Section;
+use BD;
 
 class SectionController extends Controller
 {
@@ -23,8 +25,11 @@ class SectionController extends Controller
     public function index()
     {
         $sections = Section::all();
-        
-        return view('section.index')->withSections($sections);
+        $users = User::all();
+        $roles = Role::all();
+        // dd($users);
+        return view('section.index', compact('sections', 'users', 'roles'));
+        // dd($user);
     }
     
     public function headship()

@@ -408,7 +408,12 @@ class TechnicalFormController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $technical_form = TechnicalForm::find($id);
+        $technical_form->TechnicalFormMembers()->delete();
+        $technical_form->delete();
+
+        Session::flash('success', 'O curso foi deletado com sucesso');
+        return redirect()->route('technical-form.index');
     }
 
 }

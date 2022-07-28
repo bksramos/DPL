@@ -31,9 +31,11 @@ Route::get('/dashboard', function(){
 
 Route::namespace('Admin')->prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function(){
     Route::resource('/users', 'UserController', ['except' => ['show', 'create', 'store']]);
+    
     Route::resource('/roles', 'RoleController', ['except' => ['create']]);
 });
-
+Route::get('/users/profile', 'Admin\UserController@profile')->name('users.profile');
+    Route::put('/profile-update', 'Admin\UserController@update_profile')->name('update.profile');
 /*courses route */
 Route::resource('course', 'CourseController');
 Route::get('/course/add', 'CourseController@index');
@@ -71,13 +73,11 @@ Route::get('/education-form/add', 'EducationFormController@index');
 Route::post('/education-form/create-form', 'EducationFormController@store')->name('education-form.store');
 Route::post('/education-form/insert', 'EducationFormController@insert')->name('education-form.insert');
 
-
 /*Technical (PLAMTAX) route*/
 Route::resource('technical-form', 'TechnicalFormController' , ['except' => ['store']]);
 Route::get('/technical-form/add', 'TechnicalFormController@index');
 Route::post('/technical-form/create-form', 'TechnicalFormController@store')->name('technical-form.store');
 Route::post('/technical-form/insert', 'TechnicalFormController@insert')->name('technical-form.insert');
-
 
 /*Goal route*/
 Route::resource('goal', 'GoalFormController');
@@ -90,6 +90,7 @@ Route::get('/legislation/add', 'LegislationController@index');
 Route::get('/legislation/file/{id}', ['uses' => 'LegislationController@file', 'as' => 'legislation.file']);
 Route::get('legislation-npa', 'LegislationController@npa')->name('legislation.npa');
 Route::get('legislation-tca', 'LegislationController@tca')->name('legislation.tca');
+Route::get('legislation-cm', 'LegislationController@cm')->name('legislation.cm');
 
 /* Calendar route */
 
@@ -102,6 +103,7 @@ Route::put('event-update', 'EventController@update')->name('routeEventUpdate');
 Route::post('event-store', 'EventController@store')->name('routeEventStore');
 Route::delete('event-destroy', 'EventController@destroy')->name('routeEventDelete');
 Route::get('event-briefing', 'EventController@briefing')->name('briefing');
+Route::get('event-pfv', 'EventController@pfv')->name('pfv');
 
 /* Fast Events route */
 
@@ -109,11 +111,8 @@ Route::put('fast-event-update', 'FastEventController@update')->name('routeFastEv
 Route::post('fast-event-store', 'FastEventController@store')->name('routeFastEventStore');
 Route::delete('fast-event-destroy', 'FastEventController@destroy')->name('routeFastEventDelete');
 
-
 /* Event Types route */
 Route::resource('/event-types', 'EventTypeController', ['except' => ['create']]);
-
-
 
 /*PsychoEvaluation route */
 
@@ -122,3 +121,5 @@ Route::get('/psycho/add', 'PsychoEvaluationController@index');
 Route::get('/psycho/file/{id}', ['uses' => 'PsychoEvaluationController@file', 'as' => 'psycho.file']);
 Route::get('psycho-evaluation', 'PsychoEvaluationController@evaluation')->name('psycho.evaluation');
 Route::get('psycho-profile', 'PsychoEvaluationController@profile')->name('psycho.profile');
+Route::get('psycho-sgc', 'PsychoEvaluationController@sgc')->name('psycho.sgc');
+Route::get('psycho-adidos', 'PsychoEvaluationController@adidos')->name('psycho.adidos');

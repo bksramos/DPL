@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-6" align="center">
             <h3 align="center">CURSOS</h3>
-            <a href="#">
+            <a href="{{ route('course.index') }}">
                 <img src="/img/sections/SED/CURSOS.png" alt="CURSOS" width="400" height="300">
             </a>            
         </div>

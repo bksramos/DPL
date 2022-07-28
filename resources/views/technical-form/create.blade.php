@@ -2,18 +2,15 @@
 
 @section('content')
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet">
     <link href="{{asset('css/elegant-icons-style.css')}}" rel="stylesheet">
-    {{-- <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet"> --}}
     <link href="{{asset('css/daterangepicker.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap-colorpicker.css')}}" rel="stylesheet">
-
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet">
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 
@@ -382,9 +379,11 @@
           <header class="panel-heading">
            6. JUSTIFICATIVAS
           </header>
-          <div class="panel-body"> 
-              @csrf
-              <textarea id="justifications" style="text-transform:uppercase" name="justifications"></textarea>
+          <div class="col-lg-12">
+            @csrf
+            <textarea id="justifications" class="form-control ckeditor" name="justifications" cols="30" rows="5">
+              
+            </textarea>
           </div>
         </div>
     </div>
@@ -394,9 +393,11 @@
           <header class="panel-heading">
            7. OBSERVAÇÕES
           </header>
-          <div class="panel-body"> 
-              @csrf
-              <textarea id="observations" name="observations"></textarea>
+          <div class="col-lg-12">
+            @csrf
+            <textarea id="observations" class="form-control ckeditor" name="observations" cols="30" rows="5">
+              
+            </textarea>
           </div>
         </div>
     </div>
@@ -553,12 +554,13 @@
     <script src="{{asset('js/moment.js')}}"></script>
     <script src="{{asset('js/bootstrap-colorpicker.js')}}"></script>
     <script src="{{asset('js/daterangepicker.js')}}"></script>
-    <script src="https://cdn.tiny.cloud/1/52bkebvyeqttvhy7g1slwre46g4y8pl9ej3oj2g5rcsr4gvy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
+{{--     <script src="https://cdn.tiny.cloud/1/52bkebvyeqttvhy7g1slwre46g4y8pl9ej3oj2g5rcsr4gvy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
       tinymce.init({
             selector:'#justifications, #observations'
       });
-    </script>
+    </script> --}}
     <script>
       $(document).ready(function(){
           $('.phone').mask('(999)-999-9999');

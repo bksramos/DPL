@@ -16,7 +16,7 @@ $(function(){
 
       $("#modalFastEvent").modal('show');
       $("#modalFastEvent #titleModal").text('Criar Evento Rápido');
-      $("#modalFastEvent button.deleteFastEvent").css("display", "flex");
+      $("#modalFastEvent button.deleteFastEvent").css("display", "none");
 	});
 
 	$(".fc-event").click(function () {

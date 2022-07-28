@@ -215,4 +215,14 @@ class LegislationController extends Controller
              ->get();
         return view('legislation.tca')->withLegislations($legislations);
     }
+
+    public function cm()
+    {
+        $legislations = DB::table('legislations')
+             ->select('id', 'title', 'type', 'number', 'digit_initials',
+                      'year', 'publish_date', 'created_at', 'updated_at')
+             ->where('title', 'like', strtolower("%Curriculo%"))
+             ->get();
+        return view('legislation.cm')->withLegislations($legislations);
+    }
 }

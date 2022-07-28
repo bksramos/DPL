@@ -33,14 +33,20 @@
           </div>
           <div class="form-group row">
             <label for="start" class="col-sm-4 col-form-label">Hora Inicial</label>
-            <div class="col-sm-8">
-              <input type="text" name="start" class="form-control time" id="start">
+            <div class="col-sm-8 input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                <input type="text" name="start" class="form-control" value="09:00:00" id="start">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
             </div>
           </div>
           <div class="form-group row">
             <label for="end" class="col-sm-4 col-form-label">Hora Final</label>
-            <div class="col-sm-8">
-              <input type="text" name="end" class="form-control time" id="end">
+            <div class="col-sm-8 input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                <input type="text" name="end" class="form-control" value="10:00:00" id="end">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
             </div>
           </div>
           <div class="form-group row">
@@ -59,3 +65,4 @@
     </div>
   </div>
 </div>
+

@@ -2,10 +2,10 @@
 
 @section('content')
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet">
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
 </head>
 
 <section id="main-content">
@@ -48,11 +48,7 @@
 
                 <div class="col-md-4">
                     <div class="well">
-        {{--                 <dl class="dl-horizontal">
-                            <label>Url:</label>
-                            <p><a href="{{ url('blog', $post->slug) }}">{{ url('blog', $post->slug)}}</a></p>
-                        </dl>
-         --}}
+
                         <dl class="dl-horizontal">
                             <label>Curso:</label>
                             <p>{{ $course->title }}</p>
